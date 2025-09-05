@@ -2,7 +2,11 @@ import { PrismaClient, Prisma } from '../generated/prisma';
 
 const prisma = new PrismaClient();
 
-export class TagRepository {
+export interface ITagRepository {
+  upsertMany(names: string[]): Promise<Prisma.TagGetPayload<{}>[]>;
+}
+
+export class TagRepository implements ITagRepository {
   async upsertMany(names: string[]): Promise<Prisma.TagGetPayload<{}>[]> {
     return await prisma.$transaction(
       names.map(name =>

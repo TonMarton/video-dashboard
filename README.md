@@ -9,6 +9,19 @@ Original task description: [link](https://veed.notion.site/VEED-Full-Stack-Engin
 ### Docker
 I assume everyone has it on their machine already and so it simplifies the building and procurement of dependencies, such as node versions, npm packages, or the database server. I could use an in memory database for testing
 
+### Prisma
+In production we use alembic + SQLAlchemy with Python, and Prisma provides a very similar experience. I use this always with Node projects.
+
+### Vitest
+I use Jest on a day-to-day basis, but it always takes some time to set up everything, especially with fake timers and such extras. 
+I read a lot of good things about vitest, when trouble shooting our Jest configs, so I wanted to experiment a bit.
+
+
+
+## Testing Strategy
+### Backend
+#### Unit tests Thanks to DI I can use MockRepositories 
+
 ## Planning
 These are the behaviours to implement, to let me think the required functionality through from user perspective. 
 The below double down as test cases for frontend as well.

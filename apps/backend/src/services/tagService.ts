@@ -1,7 +1,9 @@
-import { tagRepository } from '../data/tagRepository';
+import { tagRepository, ITagRepository } from '../data/tagRepository';
 import { Prisma } from '../generated/prisma';
 
 export class TagService {
+  constructor(private repository: ITagRepository = tagRepository) {}
+
   private normaliseTags(tags: string[]): string[] {
     return [...new Set(
       tags
@@ -19,7 +21,7 @@ export class TagService {
     if (normalisedTags.length === 0) {
       return [];
     }
-    return await tagRepository.upsertMany(normalisedTags);
+    return await this.repository.upsertMany(normalisedTags);
   }
 }
 
