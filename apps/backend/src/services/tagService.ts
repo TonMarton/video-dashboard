@@ -1,7 +1,11 @@
 import { tagRepository, ITagRepository } from '../data/tagRepository';
 import { Prisma } from '../generated/prisma';
 
-export class TagService {
+export interface ITagService {
+  upsertTags(tags: string[]): Promise<Prisma.TagGetPayload<{}>[]>;
+}
+
+export class TagService implements ITagService {
   constructor(private repository: ITagRepository = tagRepository) {}
 
   private normaliseTags(tags: string[]): string[] {
