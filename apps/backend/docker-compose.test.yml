@@ -1,0 +1,15 @@
+services:
+  postgres-test:
+    image: postgres:17
+    container_name: video-dashboard-postgres-test
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-video_dashboard_test}
+      POSTGRES_USER: ${POSTGRES_USER:-username}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    restart: "no"
+    networks:
+      - default

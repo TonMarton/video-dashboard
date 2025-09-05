@@ -5,22 +5,27 @@ Original task description: [link](https://veed.notion.site/VEED-Full-Stack-Engin
 ## Assumptions
 - The site would likely have many more videos -> it is not an option to load them all at once, we need some kind of pagination.
 
-## Technology used
+## Technology choices
 ### Docker
 I assume everyone has it on their machine already and so it simplifies the building and procurement of dependencies, such as node versions, npm packages, or the database server. I could use an in memory database for testing
 
-### Prisma
-In production we use alembic + SQLAlchemy with Python, and Prisma provides a very similar experience. I use this always with Node projects.
+### Prisma + PostgreSQL
+In production we use alembic + SQLAlchemy with Python, and Prisma provides a very similar experience. I use this always with Node projects. PostgreSQL is my to go relational database. 
 
 ### Vitest
 I use Jest on a day-to-day basis, but it always takes some time to set up everything, especially with fake timers and such extras. 
 I read a lot of good things about vitest, when trouble shooting our Jest configs, so I wanted to experiment a bit.
 
-
-
 ## Testing Strategy
 ### Backend
-#### Unit tests Thanks to DI I can use MockRepositories 
+#### Unit tests
+Thanks to DI I can use mock data repositories and mock data services to only test the unit under test. I like to do this to avoid many functional level mocks that can quickly become a nightmare to keep track of.
+
+#### Integration tests
+The data layer is mocked for the unit tests that test the service layer, but the data layer can only be tested effectively by using a real db instance. I am using the same db engine as in "production". This means harder set-up, I spent more then 20 minutes trying to figure out a setup that I was somewhat happy with. But, this way we can completely avoid scenarios, where the tests pass for some transaction that would behave differently on a production instance that communicate with a PostgresDB. Luckily, CI/CD providers make integration testing with containerized db instance very easy as well.
+
+#### API tests
+# TODO
 
 ## Planning
 These are the behaviours to implement, to let me think the required functionality through from user perspective. 
@@ -109,3 +114,8 @@ I get sent back to the Video Grid page, with the original scroll position preser
 Given we have some videos to display
 When I open the Video Grid page
 I see a responsive grid of videos, where the `thumbnail` is loaded from the webserver.
+
+## Development
+- install `node` (version from[.nvmrc](.nvmrc))
+- `npm i` in both apps
+- ## TODO

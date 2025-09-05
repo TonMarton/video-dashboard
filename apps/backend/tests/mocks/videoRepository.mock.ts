@@ -1,5 +1,5 @@
-import { Prisma } from '../../src/generated/prisma';
 import { IVideoRepository } from '../../src/data/videoRepository';
+import { Prisma } from '../../src/generated/prisma';
 
 export class MockVideoRepository implements IVideoRepository {
   async create(

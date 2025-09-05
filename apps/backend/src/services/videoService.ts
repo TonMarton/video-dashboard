@@ -1,8 +1,10 @@
-import { videoRepository, IVideoRepository } from '../data/videoRepository';
 import { tagService, ITagService } from './tagService';
 import { Prisma } from '../generated/prisma';
+import { videoRepository, IVideoRepository } from 'src/data/videoRepository';
 
-type CreateVideoInput = Omit<Prisma.VideoCreateInput, 'tags'> & { tags?: string[] };
+type CreateVideoInput = Omit<Prisma.VideoCreateInput, 'tags'> & {
+  tags?: string[];
+};
 
 export class VideoService {
   constructor(
@@ -14,9 +16,7 @@ export class VideoService {
     input: CreateVideoInput
   ): Promise<Prisma.VideoGetPayload<{}>> {
     const { tags = [], ...videoData } = input;
-
     const upsertedTags = await this.tagService.upsertTags(tags);
-
     const videoCreateData: Prisma.VideoCreateInput = {
       ...videoData,
       tags: {
@@ -27,7 +27,6 @@ export class VideoService {
         })),
       },
     };
-
     return await this.repository.create(videoCreateData);
   }
 }

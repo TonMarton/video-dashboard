@@ -1,16 +1,15 @@
-import { PrismaClient, Prisma } from '../generated/prisma';
-
-const prisma = new PrismaClient();
+import { Prisma } from '../generated/prisma';
+import { db } from './db';
 
 export interface ITagRepository {
   upsertMany(names: string[]): Promise<Prisma.TagGetPayload<{}>[]>;
 }
 
 export class TagRepository implements ITagRepository {
-  async upsertMany(names: string[]): Promise<Prisma.TagGetPayload<{}>[]> {
-    return await prisma.$transaction(
+  async upsertMany(names: string[]): Promise<Prisma.TagGetPayload<{}>[]> {    
+    return await db.$transaction(
       names.map(name =>
-        prisma.tag.upsert({
+        db.tag.upsert({
           where: { name },
           update: {},
           create: { name },
