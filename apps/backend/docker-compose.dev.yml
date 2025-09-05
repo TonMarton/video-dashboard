@@ -1,0 +1,18 @@
+services:
+  postgres-dev:
+    image: postgres:17
+    container_name: video-dashboard-postgres-dev
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-video_dashboard_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-username}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - default
+
+volumes:
+  postgres_dev_data:

@@ -1,6 +1,6 @@
 import { tagService, ITagService } from './tagService';
 import { Prisma } from '../generated/prisma';
-import { videoRepository, IVideoRepository } from 'src/data/videoRepository';
+import { videoRepository, IVideoRepository } from '../data/videoRepository';
 
 type CreateVideoInput = Omit<Prisma.VideoCreateInput, 'tags'> & {
   tags?: string[];
