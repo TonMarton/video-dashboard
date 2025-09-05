@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import app from '../../src/app';
 import { videoService } from '../../src/services/videoService';
-import { Prisma } from '../../src/generated/prisma';
 
 vi.mock('../../src/services/videoService');
 
