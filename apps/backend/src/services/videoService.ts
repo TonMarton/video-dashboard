@@ -1,8 +1,15 @@
 import { tagService, ITagService } from './tagService';
 import { Prisma } from '../generated/prisma';
 import { videoRepository, IVideoRepository } from '../data/videoRepository';
-import { CreateVideoRequest, GetVideosQueryParams, VideoSortField, SortOrder } from '@video-dashboard/shared-types';
+import {
+  CreateVideoRequest,
+  GetVideosQueryParams,
+  VideoSortField,
+  SortOrder,
+} from '@video-dashboard/shared-types';
 import { CursorData } from '../types/cursor';
+
+const DEFAULT_THUMBNAIL_URL = 'https://picsum.photos/seed/video2/300/200';
 
 export class VideoService {
   constructor(
@@ -15,8 +22,15 @@ export class VideoService {
   ): Promise<Prisma.VideoGetPayload<{}>> {
     const { tags = [], ...videoData } = input;
     const upsertedTags = await this.tagService.upsertTags(tags);
+
+    const thumbnailUrl =
+      videoData.thumbnail_url && videoData.thumbnail_url.trim() !== ''
+        ? videoData.thumbnail_url
+        : DEFAULT_THUMBNAIL_URL;
+
     const videoCreateData: Prisma.VideoCreateInput = {
       ...videoData,
+      thumbnail_url: thumbnailUrl,
       tags: {
         create: upsertedTags.map(tag => ({
           tag: {
@@ -31,12 +45,14 @@ export class VideoService {
   async getVideos(
     params: GetVideosQueryParams,
     cursor?: CursorData
-  ): Promise<Prisma.VideoGetPayload<{ include: { tags: { include: { tag: true } } } }>[]> {
+  ): Promise<
+    Prisma.VideoGetPayload<{ include: { tags: { include: { tag: true } } } }>[]
+  > {
     const {
       limit = 30,
       sortBy = VideoSortField.CREATED_AT,
       sortOrder = SortOrder.DESC,
-      filters
+      filters,
     } = params;
 
     let lastValue: string | number | Date | undefined;
@@ -46,7 +62,9 @@ export class VideoService {
       lastId = cursor.last_id;
       switch (sortBy) {
         case VideoSortField.CREATED_AT:
-          lastValue = cursor.last_created_at ? new Date(cursor.last_created_at) : undefined;
+          lastValue = cursor.last_created_at
+            ? new Date(cursor.last_created_at)
+            : undefined;
           break;
         case VideoSortField.TITLE:
           lastValue = cursor.last_title;

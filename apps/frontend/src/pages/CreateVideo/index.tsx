@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Button, Label, TextInput, Alert } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
 import { useCreateVideoMutation } from '../../store/api/videoApi';
 import { CreateVideoRequest } from '@video-dashboard/shared-types';
 import TopBar from '../../components/TopBar';
-import BackButton from '../../components/BackButton';
+import BackButton from './components/BackButton';
+import SuccessDialog from './components/SuccessDialog';
 
 function CreateVideo() {
+  const navigate = useNavigate();
   const [createVideo, { isLoading, error }] = useCreateVideoMutation();
   const [formData, setFormData] = useState<CreateVideoRequest>({
     title: '',
@@ -17,7 +20,7 @@ function CreateVideo() {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
-  const [successMessage, setSuccessMessage] = useState('');
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -58,16 +61,30 @@ function CreateVideo() {
       };
 
       await createVideo(submitData).unwrap();
-      setFormData({
-        title: '',
-        thumbnail_url: '',
-        duration: 300,
-        tags: [],
-      });
-      setTagInput('');
+      setShowSuccessDialog(true);
     } catch (err) {
       console.error('Failed to create video:', err);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      thumbnail_url: '',
+      duration: 300,
+      tags: [],
+    });
+    setTagInput('');
+    setValidationErrors({});
+  };
+
+  const handleCreateMore = () => {
+    resetForm();
+    setShowSuccessDialog(false);
+  };
+
+  const handleDone = () => {
+    navigate('/');
   };
 
   const handleInputChange = (field: keyof CreateVideoRequest, value: any) => {
@@ -221,22 +238,19 @@ function CreateVideo() {
           <Button
             type="button"
             color="light"
-            onClick={() => {
-              setFormData({
-                title: '',
-                thumbnail_url: '',
-                duration: 300,
-                tags: [],
-              });
-              setTagInput('');
-              setValidationErrors({});
-            }}
+            onClick={resetForm}
           >
             Reset
           </Button>
         </div>
       </form>
       </div>
+
+      <SuccessDialog
+        isOpen={showSuccessDialog}
+        onCreateMore={handleCreateMore}
+        onDone={handleDone}
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useGetVideosQuery } from '../../store/api/videoApi';
-import VideoCard from '../../components/VideoCard';
-import SearchBar from '../../components/SearchBar';
+import VideoCard from './components/VideoCard';
+import SearchBar from './components/SearchBar';
 import { VideoWithTags, VideoSortField, SortOrder } from '@video-dashboard/shared-types';
 import { Spinner } from 'flowbite-react';
 

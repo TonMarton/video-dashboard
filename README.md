@@ -52,6 +52,10 @@ I have not worked with a monorepo on this stack before, so the package.json and 
 
 I assume everyone has it on their machine already and so it simplifies the building and procurement of dependencies, such as node versions, npm packages, or the database server. I could use an in memory database for testing
 
+### NGINX for serving the frontend
+
+This is a good production practice I feel and allows us to deploy the frontend app and version the docker images nicely.
+
 ### Prisma + PostgreSQL
 
 In production we use alembic + SQLAlchemy with Python, and Prisma provides a very similar experience. I use this always with Node projects. PostgreSQL is my to go relational database.

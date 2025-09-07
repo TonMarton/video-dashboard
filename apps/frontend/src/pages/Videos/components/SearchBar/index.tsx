@@ -3,7 +3,7 @@ import { TextInput, Button, Select, Modal, Label } from 'flowbite-react';
 import { HiSearch, HiFilter, HiPlus } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import { VideoSortField, SortOrder } from '@video-dashboard/shared-types';
-import TopBar from '../TopBar';
+import TopBar from '@/components/TopBar';
 
 interface SearchBarProps {
   searchTerm: string;
@@ -62,7 +62,10 @@ function SearchBar({
               placeholder="Search videos by title..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full [&>input]:pl-10"
+              className="w-full"
+              style={{
+                paddingLeft: '3rem'
+              }}
             />
           </div>
 
