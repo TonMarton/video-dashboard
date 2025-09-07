@@ -31,6 +31,7 @@ COPY apps/backend/package*.json ./
 RUN npm install --omit=dev
 
 COPY --from=builder /app/dist ./dist
+COPY apps/backend/src ./src
 
 COPY apps/backend/prisma ./prisma
 COPY apps/backend/videos.json ./

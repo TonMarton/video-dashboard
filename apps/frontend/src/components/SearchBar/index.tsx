@@ -62,7 +62,7 @@ function SearchBar({
               placeholder="Search videos by title..."
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full"
+              className="w-full [&>input]:pl-10"
             />
           </div>
 
