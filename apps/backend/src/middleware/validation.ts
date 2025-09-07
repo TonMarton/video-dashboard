@@ -1,9 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
 
-export const validateRequest = (schema: Joi.ObjectSchema) => {
+export const validateRequest = (
+  schema: Joi.ObjectSchema,
+  source: 'body' | 'query' = 'body'
+) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    const { error } = schema.validate(req.body);
+    const dataToValidate = source === 'query' ? req.query : req.body;
+    const { error, value } = schema.validate(dataToValidate);
+
     if (error) {
       res.status(400).json({
         error: 'Bad request',
@@ -11,6 +16,11 @@ export const validateRequest = (schema: Joi.ObjectSchema) => {
       });
       return;
     }
+
+    if (source === 'body') {
+      req.body = value;
+    }
+
     next();
   };
 };
