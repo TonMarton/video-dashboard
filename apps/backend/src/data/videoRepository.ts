@@ -35,13 +35,20 @@ export class VideoRepository implements IVideoRepository {
   }): Promise<
     Prisma.VideoGetPayload<{ include: { tags: { include: { tag: true } } } }>[]
   > {
-    const { limit, sortBy, sortOrder, lastValue, lastId } = params;
+    const { limit, sortBy, sortOrder, lastValue, lastId, filters } = params;
 
     const orderBy = this.buildOrderBy(sortBy, sortOrder);
-    const where =
+    const cursorWhere =
       lastValue && lastId
         ? this.buildWhereClause(lastValue, lastId, sortBy, sortOrder)
         : {};
+
+    const filterWhere = this.buildFilterWhere(filters);
+
+    const where = {
+      ...cursorWhere,
+      ...filterWhere,
+    };
 
     return await db.video.findMany({
       where,
@@ -74,9 +81,10 @@ export class VideoRepository implements IVideoRepository {
   ): Prisma.VideoWhereInput {
     const isDesc = sortOrder === SortOrder.DESC;
     const operator = isDesc ? 'lt' : 'gt';
-    
-    const processedValue = sortBy === 'created_at' ? new Date(lastValue) : lastValue;
-    
+
+    const processedValue =
+      sortBy === 'created_at' ? new Date(lastValue) : lastValue;
+
     return {
       OR: [
         { [sortBy]: { [operator]: processedValue } },
@@ -86,6 +94,27 @@ export class VideoRepository implements IVideoRepository {
         },
       ],
     };
+  }
+
+  private buildFilterWhere(filters?: string): Prisma.VideoWhereInput {
+    if (!filters) return {};
+
+    const filterConditions: Prisma.VideoWhereInput = {};
+
+    const filterParts = filters.split(',');
+
+    for (const filter of filterParts) {
+      const [field, value] = filter.split(':');
+
+      if (field === 'title' && value) {
+        filterConditions.title = {
+          contains: value,
+          mode: 'insensitive',
+        };
+      }
+    }
+
+    return filterConditions;
   }
 }
 

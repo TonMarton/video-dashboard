@@ -1,12 +1,16 @@
 {
   "name": "@video-dashboard/shared-types",
   "version": "1.0.0",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "joi": "^18.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
   }
 }

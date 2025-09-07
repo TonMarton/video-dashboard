@@ -7,10 +7,40 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - '5432:5432'
     restart: unless-stopped
+    networks:
+      - video-dashboard-network
 
-volumes:
-  postgres_data:
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+    container_name: video-dashboard-backend
+    environment:
+      DATABASE_URL: 'postgresql://username:password@postgres:5432/video_dashboard?schema=public'
+      PORT: 8000
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - video-dashboard-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+    container_name: video-dashboard-frontend
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - video-dashboard-network
+
+networks:
+  video-dashboard-network:
+    driver: bridge

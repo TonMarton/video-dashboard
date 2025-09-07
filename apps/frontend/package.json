@@ -16,13 +16,15 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@video-dashboard/shared-types": "file:../../packages/shared-types",
+    "flowbite": "^2.5.1",
+    "flowbite-react": "^0.10.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.2.1",
     "react-redux": "^9.1.2",
-    "react-router-dom": "^6.26.1",
-    "flowbite": "^2.5.1",
-    "flowbite-react": "^0.10.1"
+    "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",
@@ -39,6 +41,7 @@
     "msw": "^2.4.9",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10",
+    "typescript": "^5.0.0",
     "vite": "^5.4.1",
     "vitest": "^3.2.4"
   }

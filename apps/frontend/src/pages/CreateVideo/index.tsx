@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Button, Label, TextInput, Alert } from 'flowbite-react';
 import { useCreateVideoMutation } from '../../store/api/videoApi';
 import { CreateVideoRequest } from '@video-dashboard/shared-types';
+import TopBar from '../../components/TopBar';
+import BackButton from '../../components/BackButton';
 
 function CreateVideo() {
   const [createVideo, { isLoading, error }] = useCreateVideoMutation();
@@ -26,9 +28,7 @@ function CreateVideo() {
       errors.title = 'Title must be 255 characters or less';
     }
 
-    if (!formData.thumbnail_url.trim()) {
-      errors.thumbnail_url = 'Thumbnail URL is required';
-    } else {
+    if (formData.thumbnail_url.trim()) {
       try {
         new URL(formData.thumbnail_url);
       } catch {
@@ -108,7 +108,12 @@ function CreateVideo() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <>
+      <TopBar>
+        <BackButton />
+      </TopBar>
+      
+      <div className="max-w-2xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           Create New Video
@@ -138,8 +143,7 @@ function CreateVideo() {
 
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="thumbnail_url" value="Thumbnail URL" />
-            <span className="text-red-500 ml-1">*</span>
+            <Label htmlFor="thumbnail_url" value="Thumbnail URL (optional)" />
           </div>
           <TextInput
             id="thumbnail_url"
@@ -149,7 +153,6 @@ function CreateVideo() {
             onChange={e => handleInputChange('thumbnail_url', e.target.value)}
             color={validationErrors.thumbnail_url ? 'failure' : 'gray'}
             helperText={validationErrors.thumbnail_url}
-            required
           />
         </div>
 
@@ -233,7 +236,8 @@ function CreateVideo() {
           </Button>
         </div>
       </form>
-    </div>
+      </div>
+    </>
   );
 }
 
