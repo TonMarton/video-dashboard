@@ -1,5 +1,4 @@
 import { tagService, ITagService } from './tagService';
-import { Prisma } from '../generated/prisma';
 import { videoRepository, IVideoRepository } from '../data/videoRepository';
 import {
   CreateVideoRequest,
@@ -8,6 +7,7 @@ import {
   SortOrder,
 } from '@video-dashboard/shared-types';
 import { CursorData } from '../types/cursor';
+import { Prisma } from '@prisma/client';
 
 const DEFAULT_THUMBNAIL_URL = 'https://picsum.photos/seed/video2/300/200';
 
