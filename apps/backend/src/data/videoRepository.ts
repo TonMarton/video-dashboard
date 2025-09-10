@@ -1,4 +1,4 @@
-import { Prisma } from '../generated/prisma';
+import { Prisma } from '@prisma/client';
 import { db } from './db';
 import { SortOrder } from '@video-dashboard/shared-types';
 

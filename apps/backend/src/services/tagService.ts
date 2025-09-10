@@ -1,5 +1,5 @@
+import { Prisma } from '@prisma/client';
 import { tagRepository, ITagRepository } from '../data/tagRepository';
-import { Prisma } from '../generated/prisma';
 
 export interface ITagService {
   upsertTags(tags: string[]): Promise<Prisma.TagGetPayload<{}>[]>;
@@ -9,15 +9,13 @@ export class TagService implements ITagService {
   constructor(private repository: ITagRepository = tagRepository) {}
 
   private normaliseTags(tags: string[]): string[] {
-    return [...new Set(
-      tags
-        .map(tag => 
-          tag
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, '')
-        )
-        .filter(tag => tag.length > 0)
-    )];
+    return [
+      ...new Set(
+        tags
+          .map(tag => tag.toLowerCase().replace(/[^a-z0-9]/g, ''))
+          .filter(tag => tag.length > 0)
+      ),
+    ];
   }
 
   async upsertTags(tags: string[]): Promise<Prisma.TagGetPayload<{}>[]> {

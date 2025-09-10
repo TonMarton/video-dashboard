@@ -1,4 +1,4 @@
-import { Prisma } from '../../src/generated/prisma';
+import { Prisma } from '@prisma/client';
 import { ITagRepository } from '../../src/data/tagRepository';
 
 export class MockTagRepository implements ITagRepository {
