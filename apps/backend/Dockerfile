@@ -17,8 +17,8 @@ COPY apps/backend/src ./src
 COPY apps/backend/prisma ./prisma
 COPY apps/backend/videos.json ./
 
-RUN npm run build
 RUN npx prisma generate
+RUN npm run build
 
 FROM node:24-alpine AS production
 
